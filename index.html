@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#05070a" />
+  <meta name="description" content="Hackers Playground — games, challenges and learning disguised as play." />
+  <title>Hackers Playground // PlayHPG</title>
+  <style>
+    :root{
+      --bg:#05070a;
+      --panel:#0a1016;
+      --panel2:#071019;
+      --line:#1dffb7;
+      --line2:#63f7ff;
+      --text:#e7fff8;
+      --muted:#89a9a2;
+      --hot:#ff4fd8;
+      --amber:#ffc857;
+      --shadow:0 0 34px rgba(29,255,183,.14);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace}
+    body{overflow-x:hidden}
+    a{color:inherit}
+    .bg{
+      position:fixed;inset:0;pointer-events:none;overflow:hidden;
+      background:
+        radial-gradient(circle at 50% -10%, rgba(99,247,255,.10), transparent 38%),
+        radial-gradient(circle at 12% 75%, rgba(255,79,216,.07), transparent 30%),
+        linear-gradient(180deg,#05070a 0%,#04080a 100%);
+      z-index:0;
+    }
+    .bg:before{
+      content:"";
+      position:absolute;inset:0;
+      background-image:
+        linear-gradient(rgba(29,255,183,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(29,255,183,.035) 1px, transparent 1px);
+      background-size:32px 32px;
+      mask-image:linear-gradient(to bottom,rgba(0,0,0,.8),transparent 92%);
+    }
+    .scan{
+      position:absolute;left:0;right:0;top:-30%;height:22%;
+      background:linear-gradient(to bottom,transparent,rgba(99,247,255,.05),transparent);
+      animation:scan 9s linear infinite;
+    }
+    @keyframes scan{to{transform:translateY(700%)}}
+    .wrap{
+      position:relative;z-index:1;
+      min-height:100dvh;
+      display:flex;flex-direction:column;
+      width:min(1120px,calc(100% - 28px));
+      margin:0 auto;
+      padding:clamp(22px,4vw,52px) 0 24px;
+    }
+    header{text-align:center;padding:10px 10px 26px}
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:8px;
+      color:var(--line);font-size:12px;letter-spacing:2.4px;text-transform:uppercase;
+      opacity:.92;
+    }
+    .eyebrow:before,.eyebrow:after{content:"";width:34px;height:1px;background:currentColor;opacity:.45}
+    h1{
+      margin:12px 0 8px;
+      font-size:clamp(34px,7vw,78px);
+      line-height:.92;
+      letter-spacing:clamp(2px,.6vw,7px);
+      text-transform:uppercase;
+      text-shadow:0 0 28px rgba(29,255,183,.20);
+    }
+    .brand-accent{color:var(--line)}
+    .tagline{
+      margin:0 auto;
+      max-width:720px;
+      color:var(--muted);
+      font-size:clamp(13px,1.8vw,17px);
+      line-height:1.65;
+    }
+    .status{
+      margin:18px auto 0;
+      display:inline-flex;align-items:center;gap:8px;
+      border:1px solid rgba(29,255,183,.18);
+      border-radius:999px;
+      padding:7px 11px;
+      color:#b8d8d1;
+      background:rgba(7,16,25,.72);
+      font-size:11px;
+      letter-spacing:1px;
+    }
+    .dot{
+      width:7px;height:7px;border-radius:50%;
+      background:var(--line);
+      box-shadow:0 0 12px var(--line);
+      animation:pulse 1.7s ease-in-out infinite;
+    }
+    @keyframes pulse{50%{opacity:.45;transform:scale(.82)}}
+    main{flex:1}
+    .section-head{
+      display:flex;justify-content:space-between;align-items:end;gap:14px;
+      margin:8px 0 12px;
+    }
+    .section-head h2{
+      margin:0;font-size:13px;letter-spacing:2.2px;text-transform:uppercase;color:#bfe8de;
+    }
+    .section-head span{font-size:11px;color:#67847e}
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(12,1fr);
+      gap:16px;
+    }
+    .game-card{
+      grid-column:span 8;
+      min-height:340px;
+      position:relative;
+      overflow:hidden;
+      border:1px solid rgba(29,255,183,.34);
+      border-radius:18px;
+      background:
+        linear-gradient(135deg,rgba(10,16,22,.98),rgba(6,14,19,.94));
+      box-shadow:var(--shadow);
+      isolation:isolate;
+    }
+    .game-card:before{
+      content:"";
+      position:absolute;inset:0;
+      background:
+        linear-gradient(90deg,transparent 0 12%,rgba(29,255,183,.035) 12% 12.5%,transparent 12.5% 100%),
+        repeating-linear-gradient(0deg,transparent 0 22px,rgba(99,247,255,.025) 23px);
+      z-index:-1;
+    }
+    .card-inner{
+      height:100%;
+      padding:clamp(22px,4vw,38px);
+      display:flex;flex-direction:column;
+    }
+    .game-id{
+      color:var(--line2);
+      font-size:11px;
+      letter-spacing:1.7px;
+      text-transform:uppercase;
+      opacity:.9;
+    }
+    .game-title{
+      margin:14px 0 8px;
+      font-size:clamp(28px,5vw,48px);
+      line-height:1;
+      letter-spacing:1.8px;
+      text-transform:uppercase;
+    }
+    .game-copy{
+      margin:0;
+      max-width:600px;
+      color:#a8c7c0;
+      font-size:clamp(13px,1.7vw,16px);
+      line-height:1.7;
+    }
+    .chips{
+      display:flex;flex-wrap:wrap;gap:8px;
+      margin:18px 0 26px;
+    }
+    .chip{
+      border:1px solid rgba(99,247,255,.18);
+      background:rgba(99,247,255,.035);
+      color:#bde9e3;
+      border-radius:999px;
+      padding:6px 9px;
+      font-size:10px;
+      letter-spacing:.7px;
+    }
+    .card-actions{
+      margin-top:auto;
+      display:flex;align-items:center;gap:13px;flex-wrap:wrap;
+    }
+    .play{
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      min-width:170px;
+      text-decoration:none;
+      border:1px solid var(--line);
+      border-radius:9px;
+      padding:13px 18px;
+      color:#03100b;
+      background:var(--line);
+      font-weight:900;
+      letter-spacing:1.2px;
+      box-shadow:0 0 24px rgba(29,255,183,.20);
+      transition:transform .15s ease,filter .15s ease,box-shadow .15s ease;
+    }
+    .play:hover{transform:translateY(-2px);filter:brightness(1.06);box-shadow:0 0 34px rgba(29,255,183,.34)}
+    .play:active{transform:translateY(0) scale(.98)}
+    .tiny{font-size:10px;color:#68837d}
+    .coming{
+      grid-column:span 4;
+      min-height:340px;
+      border:1px dashed rgba(99,247,255,.18);
+      border-radius:18px;
+      background:rgba(7,13,18,.62);
+      display:flex;align-items:center;justify-content:center;
+      text-align:center;
+      padding:24px;
+    }
+    .coming .lock{font-size:31px;opacity:.42;margin-bottom:12px}
+    .coming strong{display:block;font-size:13px;letter-spacing:1.6px;color:#89a9a2}
+    .coming p{font-size:11px;line-height:1.6;color:#5f7772;margin:9px 0 0}
+    footer{
+      padding:28px 4px 2px;
+      display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;
+      color:#58716b;font-size:10px;letter-spacing:.6px;
+    }
+    footer .creator{color:#76958e}
+    @media (max-width:760px){
+      .wrap{width:min(100% - 18px,1120px);padding-top:18px}
+      header{padding-bottom:20px}
+      .grid{gap:12px}
+      .game-card,.coming{grid-column:span 12}
+      .game-card{min-height:330px}
+      .coming{min-height:145px}
+      .section-head{margin-top:4px}
+      .play{width:100%}
+      footer{justify-content:center;text-align:center}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *,*:before,*:after{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="bg" aria-hidden="true"><div class="scan"></div></div>
+
+  <div class="wrap">
+    <header>
+      <div class="eyebrow">PlayHPG.com</div>
+      <h1>Hackers <span class="brand-accent">Playground</span></h1>
+      <p class="tagline">Games, challenges and learning — disguised as play.</p>
+      <div class="status"><span class="dot"></span> PLAYGROUND ONLINE</div>
+    </header>
+
+    <main>
+      <div class="section-head">
+        <h2>Available Games</h2>
+        <span>SELECT A MISSION</span>
+      </div>
+
+      <section class="grid">
+        <article class="game-card">
+          <div class="card-inner">
+            <div class="game-id">GAME 01 // CIPHER TRAINING</div>
+            <h2 class="game-title">Neon Cipher</h2>
+            <p class="game-copy">
+              Crack binary transmissions before the trace catches you.
+              Learn how letters and numbers become binary while racing through six hacker-themed worlds.
+            </p>
+
+            <div class="chips" aria-label="Game features">
+              <span class="chip">BINARY</span>
+              <span class="chip">LOGIC</span>
+              <span class="chip">6 WORLDS</span>
+              <span class="chip">5 DIFFICULTY MODES</span>
+              <span class="chip">MOBILE + DESKTOP</span>
+            </div>
+
+            <div class="card-actions">
+              <a class="play" href="https://barrecoder.github.io/hackers-playground/" target="_self" aria-label="Play Neon Cipher">
+                <span aria-hidden="true">▶</span> PLAY NEON CIPHER
+              </a>
+              <span class="tiny">No install required</span>
+            </div>
+          </div>
+        </article>
+
+        <aside class="coming" aria-label="More games coming soon">
+          <div>
+            <div class="lock" aria-hidden="true">⌁</div>
+            <strong>MORE MISSIONS IN DEVELOPMENT</strong>
+            <p>The playground is just getting started.</p>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <footer>
+      <span>PLAYHPG // HACKERS PLAYGROUND</span>
+      <span class="creator">Created by Rudransh Bhat © 2026</span>
+    </footer>
+  </div>
+</body>
+</html>
